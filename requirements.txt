@@ -1,0 +1,9 @@
+
+sentence-transformers
+streamlit
+google
+fastapi
+uvicorn
+starlette
+
+

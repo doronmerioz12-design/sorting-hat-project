@@ -1,0 +1,271 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.split-container {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+}
+
+.split {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: flex 0.5s ease;
+    position: relative;
+    cursor: pointer;
+    color: white;
+}
+
+.split:hover { flex: 1.5; }
+
+.split::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.4);
+    z-index: 1;
+}
+
+.left::before { background-image: url('assets/hogwarts_castle.jpg'); }
+.right::before { background-image: url('assets/avatar_state.jpeg'); }
+
+.split > * { position: relative; z-index: 2; }
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* שינוי מ-background ל-background-color כדי שה-themes יוכלו לדרוס */
+    background-color: rgba(10, 10, 10, 0.85);
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    /* הורדת backdrop-filter שיכול לגרום לבעיות stacking context */
+    transition: background-color 0.8s ease;
+}
+
+.input-instruction {
+    color: white;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    font-family: 'Cinzel', serif;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.modal {
+    background: #222;
+    color: white;
+    padding: 40px;
+    border-radius: 15px;
+    border: 2px solid gold;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+    max-width: 500px;
+    width: 90%;
+    transition: all 0.8s ease;
+}
+
+.refresh-btn {
+    background: none;
+    border: none;
+    color: #f1c40f;
+    font-size: 3rem;
+    cursor: pointer;
+    transition: transform 0.3s ease, color 0.3s ease;
+    display: block;
+    margin: 0 auto;
+    line-height: 1;
+}
+
+.refresh-btn:hover {
+    transform: rotate(-45deg) scale(1.2);
+    color: white;
+}
+
+#loading-section {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 200;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+#loading-section.hogwarts-mode {
+    background-image: linear-gradient(rgba(255,255,255,0.7), rgba(255,255,255,0.7)), url('assets/hogwarts_castle.jpg');
+}
+
+#loading-section.avatar-mode {
+    background-image: linear-gradient(rgba(255,255,255,0.7), rgba(255,255,255,0.7)), url('assets/avatar_state.jpeg');
+}
+
+.houses-loader {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    transform: scale(1.3);
+}
+
+.house-part {
+    width: 160px;
+    height: 172px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 320px 344px;
+    filter: brightness(0.9);
+    transition: all 0.5s ease;
+    border-radius: 10px;
+}
+
+.hogwarts-mode .part-1 { background-image: url('assets/hogwarts_houses.png'); background-position: 0 0; }
+.hogwarts-mode .part-2 { background-image: url('assets/hogwarts_houses.png'); background-position: -160px 0; }
+.hogwarts-mode .part-3 { background-image: url('assets/hogwarts_houses.png'); background-position: 0 -172px; }
+.hogwarts-mode .part-4 { background-image: url('assets/hogwarts_houses.png'); background-position: -160px -172px; }
+
+.avatar-mode .part-1 { background-image: url('assets/avatar_nation.webp'); background-position: 0 0; }
+.avatar-mode .part-2 { background-image: url('assets/avatar_nation.webp'); background-position: -160px 0; }
+.avatar-mode .part-3 { background-image: url('assets/avatar_nation.webp'); background-position: 0 -172px; }
+.avatar-mode .part-4 { background-image: url('assets/avatar_nation.webp'); background-position: -160px -172px; }
+
+@keyframes sequentialGlow {
+    0%, 10% { filter: brightness(1.2) drop-shadow(0 0 25px currentColor); transform: scale(1.1); }
+    25%, 100% { filter: brightness(0.6); transform: scale(1); }
+}
+
+.loading-active .house-part { animation: sequentialGlow 4s infinite; }
+.loading-active .house-part.part-1 { animation-delay: 0s; }
+.loading-active .house-part.part-2 { animation-delay: 1s; }
+.loading-active .house-part.part-4 { animation-delay: 2s; }
+.loading-active .house-part.part-3 { animation-delay: 3s; }
+
+/* ===================== */
+/* THEMES — צבעי בתים   */
+/* ===================== */
+
+/* גריפינדור */
+.theme-gryffindor {
+    background-color: rgba(116, 0, 1, 0.9) !important;
+}
+.theme-gryffindor .modal {
+    background-color: rgba(116, 0, 1, 0.95) !important;
+    color: #ffeb3b !important;
+    border-color: #ffeb3b !important;
+    box-shadow: 0 0 40px rgba(116, 0, 1, 0.6) !important;
+}
+
+/* סלית'רין */
+.theme-slytherin {
+    background-color: rgba(26, 71, 42, 0.9) !important;
+}
+.theme-slytherin .modal {
+    background-color: rgba(26, 71, 42, 0.95) !important;
+    color: #ffffff !important;
+    border-color: #c0c0c0 !important;
+    box-shadow: 0 0 40px rgba(26, 71, 42, 0.6) !important;
+}
+
+/* רייבנקלו */
+.theme-ravenclaw {
+    background-color: rgba(14, 26, 64, 0.9) !important;
+}
+.theme-ravenclaw .modal {
+    background-color: rgba(14, 26, 64, 0.95) !important;
+    color: #91beff !important;
+    border-color: #91beff !important;
+    box-shadow: 0 0 40px rgba(14, 26, 64, 0.6) !important;
+}
+
+/* הפלפאף */
+.theme-hufflepuff {
+    background-color: rgba(180, 130, 20, 0.85) !important;
+}
+.theme-hufflepuff .modal {
+    background-color: rgba(236, 185, 57, 0.97) !important;
+    color: #000000 !important;
+    border-color: #000000 !important;
+    box-shadow: 0 0 40px rgba(236, 185, 57, 0.6) !important;
+}
+
+/* אומת האש */
+.theme-firenation {
+    background-color: rgba(161, 0, 0, 0.9) !important;
+}
+.theme-firenation .modal {
+    background-color: rgba(161, 0, 0, 0.95) !important;
+    color: #f2cb05 !important;
+    border-color: #f2cb05 !important;
+    box-shadow: 0 0 40px rgba(161, 0, 0, 0.6) !important;
+}
+
+/* שבט המים */
+.theme-watertribe {
+    background-color: rgba(0, 71, 171, 0.9) !important;
+}
+.theme-watertribe .modal {
+    background-color: rgba(0, 71, 171, 0.95) !important;
+    color: #ffffff !important;
+    border-color: #ffffff !important;
+    box-shadow: 0 0 40px rgba(0, 71, 171, 0.6) !important;
+}
+
+/* ממלכת האדמה */
+.theme-earthkingdom {
+    background-color: rgba(27, 77, 62, 0.9) !important;
+}
+.theme-earthkingdom .modal {
+    background-color: rgba(27, 77, 62, 0.95) !important;
+    color: #ffe066 !important;
+    border-color: #ffe066 !important;
+    box-shadow: 0 0 40px rgba(27, 77, 62, 0.6) !important;
+}
+
+/* נוודי האוויר */
+.theme-airnomads {
+    background-color: rgba(210, 205, 180, 0.9) !important;
+}
+.theme-airnomads .modal {
+    background-color: rgba(245, 245, 220, 0.97) !important;
+    color: #8b4513 !important;
+    border-color: #8b4513 !important;
+    box-shadow: 0 0 40px rgba(139, 69, 19, 0.4) !important;
+}
+
+/* ===================== */
+/* טקסט ב-modal          */
+/* ===================== */
+
+.modal p {
+    color: inherit;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8), -1px -1px 0 rgba(0, 0, 0, 0.8);
+    font-weight: 800;
+    margin: 15px auto;
+}
+
+.refresh-btn {
+    color: inherit;
+}
