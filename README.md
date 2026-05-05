@@ -27,7 +27,7 @@ based on their personality, history, and biographical data.
 
 1. **Clone the repository**:
     ```bash
-  git clone https://github.com/doronmerioz12-design/sorting-hat-project.git
+        git clone https://github.com/doronmerioz12-design/sorting-hat-project.git
     ```
    
 2. **Set up a Virtual Environment**:
